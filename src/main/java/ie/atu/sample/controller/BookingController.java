@@ -1,6 +1,7 @@
 package ie.atu.sample.controller;
 
 import ie.atu.sample.model.Booking;
+import ie.atu.sample.model.Request;
 import ie.atu.sample.service.BookingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,7 @@ public class BookingController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Booking create(@RequestBody Booking booking) {
+    public Booking create(@RequestBody Request booking) {
         return  service.create(booking);
     }
 }
