@@ -22,8 +22,6 @@ public class Booking {
 
     @NotBlank
     private String name;
-    @NotNull
-    private Long bookingID;
     @Positive
     private int count;
     @NotNull

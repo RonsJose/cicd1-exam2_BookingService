@@ -1,31 +1,45 @@
 package ie.atu.sample.service;
 
+import ie.atu.sample.client.BookingClient;
+import ie.atu.sample.dto.Room;
 import ie.atu.sample.model.Booking;
-import ie.atu.sample.model.Request;
+import ie.atu.sample.dto.Request;
 import ie.atu.sample.repository.BookingRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @Service
 public class BookingService {
     private final BookingRepository bookingRepository;
+    private final BookingClient bookingClient;
 
-    public BookingService(BookingRepository bookingRepository) {
+    public BookingService(BookingRepository bookingRepository, BookingClient bookingClient) {
         this.bookingRepository = bookingRepository;
+        this.bookingClient = bookingClient;
     }
 
     public List<Booking> getAll(){
        return bookingRepository.findAll();
     }
 
-    public Booking create(Request booking){
+    public Booking create(Request request){
+
+        Room room = bookingClient.getRoom(request.roomID());
+        if (request.count()> room.getCapacity())
+        {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Room Capacity Exceeded");
+        }
 
         Booking bookingEntity = new Booking();
-        bookingEntity.setName(booking.name());
-        bookingEntity.setRoomID(booking.roomID());
-        bookingEntity.setCount(booking.count());
-        bookingEntity.setStatus(booking.status());
+        bookingEntity.setName(request.name());
+        bookingEntity.setRoomID(request.roomID());
+        bookingEntity.setCount(request.count());
+
         return  bookingRepository.save(bookingEntity);
     }
+
+
 }
