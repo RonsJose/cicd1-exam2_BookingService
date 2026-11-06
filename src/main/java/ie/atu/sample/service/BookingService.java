@@ -1,5 +1,6 @@
 package ie.atu.sample.service;
 
+import ie.atu.sample.dto.Responses;
 import ie.atu.sample.client.BookingClient;
 import ie.atu.sample.dto.Room;
 import ie.atu.sample.model.Booking;
@@ -41,5 +42,14 @@ public class BookingService {
         return  bookingRepository.save(bookingEntity);
     }
 
-
+    public Responses getById(Long id){
+        Booking booking  = bookingRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Incorrect booking id"));
+        Responses response = new Responses();
+        response.setId(booking.getId());
+        response.setName(booking.getName());
+        response.setRoomID(booking.getRoomID());
+        response.setCount(booking.getCount());
+        response.setStatus(booking.isStatus());
+        return response;
+    }
 }

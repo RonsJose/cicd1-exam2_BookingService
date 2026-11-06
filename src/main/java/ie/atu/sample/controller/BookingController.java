@@ -1,5 +1,6 @@
 package ie.atu.sample.controller;
 
+import ie.atu.sample.dto.Responses;
 import ie.atu.sample.model.Booking;
 import ie.atu.sample.dto.Request;
 import ie.atu.sample.service.BookingService;
@@ -28,4 +29,8 @@ public class BookingController {
         return  service.create(booking);
     }
 
+    @GetMapping("/{id}")
+    public Responses getById(@PathVariable Long id){
+        return service.getById(id);
+    }
 }
